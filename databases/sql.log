@@ -1,0 +1,127 @@
+timestamp: 2017-06-30T07:09:27.848045
+CREATE TABLE web2py_session_iva(
+    id SERIAL PRIMARY KEY,
+    locked CHAR(1),
+    client_ip VARCHAR(64),
+    created_datetime TIMESTAMP,
+    modified_datetime TIMESTAMP,
+    unique_key VARCHAR(64),
+    session_data BYTEA
+);
+success!
+timestamp: 2017-06-30T07:39:20.203424
+CREATE TABLE auth_user(
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(128),
+    last_name VARCHAR(128),
+    email VARCHAR(512),
+    password VARCHAR(512),
+    registration_key VARCHAR(512),
+    reset_password_key VARCHAR(512),
+    registration_id VARCHAR(512)
+);
+success!
+timestamp: 2017-06-30T07:39:20.525910
+CREATE TABLE auth_group(
+    id SERIAL PRIMARY KEY,
+    role VARCHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2017-06-30T07:39:20.715348
+CREATE TABLE auth_membership(
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE  
+);
+success!
+timestamp: 2017-06-30T07:39:21.026435
+CREATE TABLE auth_permission(
+    id SERIAL PRIMARY KEY,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE  ,
+    name VARCHAR(512),
+    table_name VARCHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2017-06-30T07:39:21.194951
+CREATE TABLE auth_event(
+    id SERIAL PRIMARY KEY,
+    time_stamp TIMESTAMP,
+    client_ip VARCHAR(512),
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    origin VARCHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2017-06-30T07:39:21.406154
+CREATE TABLE auth_cas(
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    created_on TIMESTAMP,
+    service VARCHAR(512),
+    ticket VARCHAR(512),
+    renew CHAR(1)
+);
+success!
+timestamp: 2017-06-30T07:39:21.649663
+CREATE TABLE empresas(
+    id SERIAL PRIMARY KEY,
+    cnpj VARCHAR(80),
+    razao_social VARCHAR(100),
+    fantasia VARCHAR(80),
+    cep VARCHAR(10),
+    endereco VARCHAR(80),
+    bairro VARCHAR(80),
+    cidade VARCHAR(80),
+    uf VARCHAR(2),
+    latitude VARCHAR(50),
+    longitude VARCHAR(50),
+    qtd_ivas INTEGER,
+    status_empresa VARCHAR(30),
+    data_cadastro DATE,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  
+);
+success!
+timestamp: 2017-06-30T07:39:21.815774
+CREATE TABLE setores(
+    id SERIAL PRIMARY KEY,
+    id_empresa INTEGER,
+    codigo_setor VARCHAR(20),
+    setor VARCHAR(40),
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  
+);
+success!
+timestamp: 2017-06-30T07:39:21.916480
+CREATE TABLE grupos_ivas(
+    id SERIAL PRIMARY KEY,
+    id_empresa INTEGER,
+    codigo_grupo VARCHAR(20),
+    grupo VARCHAR(40),
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  
+);
+success!
+timestamp: 2017-06-30T07:39:22.050078
+CREATE TABLE produtos(
+    id SERIAL PRIMARY KEY,
+    id_empresa INTEGER,
+    codigo_de_barras VARCHAR(40),
+    descricao VARCHAR(40),
+    id_grupo_iva INTEGER,
+    id_setor INTEGER,
+    url_video VARCHAR(200),
+    url_img VARCHAR(200),
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  
+);
+success!
+timestamp: 2017-06-30T07:39:22.160954
+CREATE TABLE ivas(
+    id SERIAL PRIMARY KEY,
+    id_empresa INTEGER,
+    descricao VARCHAR(40),
+    modelo VARCHAR(40),
+    serial VARCHAR(40),
+    id_grupo_iva INTEGER,
+    id_setor INTEGER
+);
+success!
